@@ -53,7 +53,7 @@ public class ACServer extends Thread {
 		
 		byte[] Req_Data = data.getData();  //构建缓存包大小1024
 		System.out.println("收到的数据包大小："+data.getLength());
-		byte[] Req_Data_Base=new byte[16];  //构建接收基础包大小16
+		byte[] Req_Data_Base=new byte[data.getLength()];  //构建接收基础包大小16
 		for(int l=0;l<Req_Data_Base.length;l++){
 			Req_Data_Base[l]=Req_Data[l];
 		}
@@ -97,7 +97,14 @@ public class ACServer extends Thread {
 		String userpass=null;
 		String chappass=null;
 		String challengeString=null;
-		int pos=16;
+		int pos = 0;
+		if(((int)(Ver[0] & 0xFF))==1){
+			pos=16;
+		}
+		if(((int)(Ver[0] & 0xFF))==2){
+			pos=32;
+		}
+		
 		int AN=(int)(AttrNum[0] & 0xFF);
 		if(AN>0){
 			int num=1;
